@@ -639,31 +639,7 @@ eval("\n\nvar alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqr
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _resources_game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./resources/game */ \"./src/resources/game.js\");\n/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/main.scss */ \"./src/styles/main.scss\");\n\n\n\n//# sourceURL=webpack:///./src/index.js?");
-
-/***/ }),
-
-/***/ "./src/resources/StateMachine2.js":
-/*!****************************************!*\
-  !*** ./src/resources/StateMachine2.js ***!
-  \****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nconst cells = document.querySelectorAll(\".cell\");\n\nclass StateMachine {\n  constructor(socket, playerPosition) {\n    _defineProperty(this, \"clickHandlerPlayer1\", event => {\n      console.debug(this);\n\n      if (this.whoAmI === 1) {\n        const cellId = event.target.getAttribute(\"cell-id\");\n        const data = {\n          currentPlayer: 1,\n          nextPlayer: 2,\n          cellId: cellId\n        };\n        this.socket.emit(\"selectCell\", data);\n      } else {\n        console.debug(\"Player 1 Turn!\");\n      }\n    });\n\n    _defineProperty(this, \"clickHandlerPlayer2\", event => {\n      console.debug(this);\n\n      if (this.whoAmI === 2) {\n        const cellId = event.target.getAttribute(\"cell-id\");\n        const data = {\n          currentPlayer: 2,\n          nextPlayer: 1,\n          cellId: cellId\n        };\n        this.socket.emit(\"selectCell\", data);\n      } else {\n        console.debug(\"Player 2 Turn!\");\n      }\n    });\n\n    _defineProperty(this, \"dispatch\", () => {\n      this.gameStates[this.state].action();\n    });\n\n    _defineProperty(this, \"changeState\", newState => {\n      this.state = newState;\n    });\n\n    this.socket = socket;\n    this.whoAmI = playerPosition;\n    this.state = \"WAITING_PLAYERS\";\n    this.gameStates = {\n      WAITING_PLAYERS: {\n        action: () => {\n          console.log(\"<<< WAITING FOR PLAYERS >>>\");\n        }\n      },\n      PLAYER_1_TURN: {\n        action: () => {\n          console.log(\"<<< PLAYER 1 TURN >>>\");\n          console.log(\"this.whoAmI:\");\n          console.log(this.whoAmI);\n          cells.forEach(cell => {\n            cell.removeEventListener(\"click\", this.clickHandlerPlayer1.bind(this));\n            cell.removeEventListener(\"click\", this.clickHandlerPlayer2.bind(this));\n          });\n          cells.forEach(cell => {\n            cell.addEventListener(\"click\", this.clickHandlerPlayer1.bind(this));\n          });\n        }\n      },\n      PLAYER_2_TURN: {\n        action: () => {\n          console.log(\"<<< PLAYER 2 TURN >>>\");\n          console.log(\"this.whoAmI:\");\n          console.debug(this.whoAmI);\n          cells.forEach(cell => {\n            cell.removeEventListener(\"click\", this.clickHandlerPlayer1.bind(this));\n            cell.removeEventListener(\"click\", this.clickHandlerPlayer2.bind(this));\n          });\n          cells.forEach(cell => {\n            cell.addEventListener(\"click\", this.clickHandlerPlayer2.bind(this));\n          });\n        }\n      },\n      GAME_OVER: {\n        action: () => console.log(\"Game over brow!\")\n      }\n    };\n  }\n\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (StateMachine);\n\n//# sourceURL=webpack:///./src/resources/StateMachine2.js?");
-
-/***/ }),
-
-/***/ "./src/resources/game.js":
-/*!*******************************!*\
-  !*** ./src/resources/game.js ***!
-  \*******************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _socketClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./socketClient */ \"./src/resources/socketClient.js\");\n/* harmony import */ var _StateMachine2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StateMachine2 */ \"./src/resources/StateMachine2.js\");\n\n\nconst gameInfo = document.querySelector(\".game-info > h1\");\n_socketClient__WEBPACK_IMPORTED_MODULE_0__[\"socket\"].on(\"connect\", () => {\n  console.debug(\"Connected!\");\n  var roomState;\n  _socketClient__WEBPACK_IMPORTED_MODULE_0__[\"socket\"].on('newPlayer', data => {\n    const {\n      playerPosition\n    } = data;\n    console.log(\"You are the Player %s\", playerPosition);\n    roomState = new _StateMachine2__WEBPACK_IMPORTED_MODULE_1__[\"default\"](_socketClient__WEBPACK_IMPORTED_MODULE_0__[\"socket\"], playerPosition);\n    roomState.dispatch();\n  });\n  _socketClient__WEBPACK_IMPORTED_MODULE_0__[\"socket\"].on(\"roomData\", roomData => {\n    console.log(roomData);\n    gameInfo.innerHTML = roomData.message;\n    roomState.changeState(roomData.state);\n    roomState.dispatch();\n  });\n  _socketClient__WEBPACK_IMPORTED_MODULE_0__[\"socket\"].on(\"fillCell\", data => {\n    const {\n      cellToFill,\n      currentPlayer\n    } = data;\n    const cell = document.querySelector(`[cell-id=\"${cellToFill}\"]`);\n    cell.classList.add(`selected-player-${currentPlayer}`);\n  });\n});\n\n//# sourceURL=webpack:///./src/resources/game.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _test_test__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./test/test */ \"./src/test/test.js\");\n/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/main.scss */ \"./src/styles/main.scss\");\n// import './main/game'\n\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 
@@ -671,11 +647,11 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _soc
 /*!***************************************!*\
   !*** ./src/resources/socketClient.js ***!
   \***************************************/
-/*! exports provided: socket */
+/*! exports provided: io */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"socket\", function() { return socket; });\nconst openSocket = __webpack_require__(/*! socket.io-client */ \"./node_modules/socket.io-client/lib/index.js\");\n\nconst socket = openSocket(\"http://localhost:5000/\");\n\n\n//# sourceURL=webpack:///./src/resources/socketClient.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"io\", function() { return io; });\nconst io = __webpack_require__(/*! socket.io-client */ \"./node_modules/socket.io-client/lib/index.js\");\n\n\n\n//# sourceURL=webpack:///./src/resources/socketClient.js?");
 
 /***/ }),
 
@@ -688,6 +664,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js!./main.scss */ \"./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss\");\n\n            \n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_main_scss__WEBPACK_IMPORTED_MODULE_1__[\"default\"], options);\n\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_main_scss__WEBPACK_IMPORTED_MODULE_1__[\"default\"].locals || {});\n\n//# sourceURL=webpack:///./src/styles/main.scss?");
+
+/***/ }),
+
+/***/ "./src/test/test.js":
+/*!**************************!*\
+  !*** ./src/test/test.js ***!
+  \**************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _resources_socketClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../resources/socketClient */ \"./src/resources/socketClient.js\");\n\nconst socket = Object(_resources_socketClient__WEBPACK_IMPORTED_MODULE_0__[\"io\"])(\"http://localhost:5000/\");\nsocket.on(\"connect\", () => {\n  console.log(\"Estamos conectados!\");\n});\n\n//# sourceURL=webpack:///./src/test/test.js?");
 
 /***/ }),
 
