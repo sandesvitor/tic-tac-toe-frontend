@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;500;600;700&display=swap');
+
+$bg:#ff6347;
+$main-font: 'Oswald', sans-serif;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: $bg;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    font-family: $main-font;
+    color: #ffffff;
+    font-size: 30px;
+}
+
+.game-info {
+    padding: 20px;
+    letter-spacing: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-info h1 {
+    width: 50%;
+    text-align: center;
+    font-size: 0.9em;
+    margin: 0;
+}
+.game-container {
+    border: 10px solid navy;
+    width: 600px;
+    height: 600px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.cell {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.selected-player-1 {
+    background-color: chartreuse;
+    cursor: default;
+}
+
+.selected-player-2 {
+    background-color: crimson;
+    cursor: default;
+}
