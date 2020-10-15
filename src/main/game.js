@@ -10,10 +10,13 @@ socket.on("connect", () => {
     let roomState
     let whoAmI
 
-    socket.on('newPlayer', data => {
-        const { playerPosition } = data
-        console.log("You are the Player %s", playerPosition)
-        whoAmI = playerPosition
+    socket.on("whoAmI", position => {
+        const msg = position !== 0
+            ? `You are Player ${position}`
+            : "Waiting for vacancy\nPlease wait..."
+        console.log(msg)
+
+        whoAmI = position
     })
 
     Array.from(cells).forEach(cell => {
@@ -83,6 +86,7 @@ socket.on("connect", () => {
     })
 
     socket.on("fillCell", data => {
+        console.debug(data)
         const { cellToFill, currentPlayer } = data
         const cellSelected = document.querySelector(`[cell-id="${cellToFill}"]`)
         cellSelected.classList.add(`selected-player-${currentPlayer}`)

@@ -639,7 +639,19 @@ eval("\n\nvar alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqr
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _test_test__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./test/test */ \"./src/test/test.js\");\n/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/main.scss */ \"./src/styles/main.scss\");\n// import './main/game'\n\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _main_game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main/game */ \"./src/main/game.js\");\n/* harmony import */ var _styles_main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/main.scss */ \"./src/styles/main.scss\");\n // import './test/test'\n\n\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/main/game.js":
+/*!**************************!*\
+  !*** ./src/main/game.js ***!
+  \**************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _resources_socketClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../resources/socketClient */ \"./src/resources/socketClient.js\");\n\nconst socket = Object(_resources_socketClient__WEBPACK_IMPORTED_MODULE_0__[\"io\"])(\"http://localhost:5000/\");\nconst gameInfo = document.querySelector(\".game-info > h1\");\nsocket.on(\"connect\", () => {\n  console.debug(\"Connected!\");\n  const cells = document.querySelectorAll(\".cell\");\n  let roomState;\n  let whoAmI;\n  socket.on(\"whoAmI\", position => {\n    const msg = position !== 0 ? `You are Player ${position}` : \"Waiting for vacancy\\nPlease wait...\";\n    console.log(msg);\n    whoAmI = position;\n  });\n  Array.from(cells).forEach(cell => {\n    cell.addEventListener(\"click\", event => {\n      if (roomState.state == \"WAITING_PLAYERS\") {\n        console.log(\"Wait, dude...\");\n      } else if (roomState.state == \"PLAYER_1_TURN\") {\n        console.log(\"<<< PLAYER 1 TURN >>>\");\n\n        if (whoAmI === 1) {\n          const cellId = parseInt(event.target.getAttribute('cell-id'));\n          const cellRow = parseInt(event.target.getAttribute('row'));\n          const cellCollumn = parseInt(event.target.getAttribute('column'));\n          let isSelected = roomState.cellMatrix.find(cell => cell[1] == cellId);\n\n          if (!isSelected) {\n            console.log(\"Player 1 clicked!\");\n            socket.emit(\"selectCell\", {\n              currentPlayer: 1,\n              nextPlayer: 2,\n              cellId: cellId,\n              cellCoordinates: [cellRow, cellCollumn]\n            });\n          } else {\n            console.log(\"Cell alread selected\");\n          }\n        } else {\n          console.log(\"You are NOT Player 1...\");\n        }\n      } else if (roomState.state == \"PLAYER_2_TURN\") {\n        console.log(\"<<< PLAYER 2 TURN >>>\");\n\n        if (whoAmI === 2) {\n          const cellId = parseInt(event.target.getAttribute('cell-id'));\n          const cellRow = parseInt(event.target.getAttribute('row'));\n          const cellCollumn = parseInt(event.target.getAttribute('column'));\n          let isSelected = roomState.cellMatrix.find(cell => cell[1] == cellId);\n\n          if (!isSelected) {\n            console.log(\"Player 2 clicked!\");\n            socket.emit(\"selectCell\", {\n              currentPlayer: 2,\n              nextPlayer: 1,\n              cellId: cellId,\n              cellCoordinates: [cellRow, cellCollumn]\n            });\n          } else {\n            console.log(\"Cell alread selected\");\n          }\n        } else {\n          console.log(\"You are NOT Player 2...\");\n        }\n      } else {\n        return;\n      }\n    });\n  });\n  socket.on(\"roomData\", roomData => {\n    console.log(roomData);\n    gameInfo.innerHTML = roomData.message;\n    roomState = roomData;\n  });\n  socket.on(\"fillCell\", data => {\n    console.debug(data);\n    const {\n      cellToFill,\n      currentPlayer\n    } = data;\n    const cellSelected = document.querySelector(`[cell-id=\"${cellToFill}\"]`);\n    cellSelected.classList.add(`selected-player-${currentPlayer}`);\n  });\n});\n\n//# sourceURL=webpack:///./src/main/game.js?");
 
 /***/ }),
 
@@ -664,18 +676,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ \"./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js\");\n/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!../../node_modules/sass-loader/dist/cjs.js!./main.scss */ \"./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles/main.scss\");\n\n            \n\nvar options = {};\n\noptions.insert = \"head\";\noptions.singleton = false;\n\nvar update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_main_scss__WEBPACK_IMPORTED_MODULE_1__[\"default\"], options);\n\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_main_scss__WEBPACK_IMPORTED_MODULE_1__[\"default\"].locals || {});\n\n//# sourceURL=webpack:///./src/styles/main.scss?");
-
-/***/ }),
-
-/***/ "./src/test/test.js":
-/*!**************************!*\
-  !*** ./src/test/test.js ***!
-  \**************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _resources_socketClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../resources/socketClient */ \"./src/resources/socketClient.js\");\n\nconst socket = Object(_resources_socketClient__WEBPACK_IMPORTED_MODULE_0__[\"io\"])(\"http://localhost:5000/\");\nsocket.on(\"connect\", () => {\n  console.log(\"Estamos conectados!\");\n});\n\n//# sourceURL=webpack:///./src/test/test.js?");
 
 /***/ }),
 
