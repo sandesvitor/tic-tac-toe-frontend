@@ -32,4 +32,6 @@ ___
 
 - [ ] Create Room concept for wrapping sockets, separating user session and players;
 - [ ] Create chat funcionality;
-- [ ] Make avatar selection phase; 
+- [ ] Make avatar selection phase;
+- [ ] Create env variables for connect to server;
+- [ ] Write Dockerfile;  
